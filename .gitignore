@@ -11,3 +11,13 @@ out/
 # Database
 data/*.db*
 data/.api-key
+
+# Python quant research service
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+quant/data/*.db*

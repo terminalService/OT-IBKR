@@ -140,6 +140,12 @@ Two optional knobs for the assistant, both standard for the Anthropic SDK:
 - `ANTHROPIC_BASE_URL` — point the assistant at an Anthropic-compatible endpoint (a self-hosted gateway, an EU-hosted relay, etc.) instead of api.anthropic.com.
 - `ANTHROPIC_MODEL` — override the model sent in requests (default: `claude-opus-4-8`). Required when the endpoint behind `ANTHROPIC_BASE_URL` serves models under different ids.
 
+### Optional: quantitative research service
+
+The independent Python service in [`quant/`](quant/README.md) connects to OpenTerminal's existing screener API and requests historical bars from a read-only IBKR paper-trading session. It generates transparent research signals and stores them in its own SQLite database. It does not submit, modify, or cancel orders.
+
+Follow [`quant/README.md`](quant/README.md) for Python setup, IBKR configuration, and service startup. OpenTerminal must be running for candidate discovery. Market data from OpenTerminal is delayed/indicative and is not execution-grade.
+
 ### Security defaults
 
 - The API binds to `127.0.0.1` and only accepts browser requests from `http://localhost:3000` by default — nothing else on your network can reach it out of the box.
@@ -180,6 +186,9 @@ Portfolio data persists in the `terminal-data` volume (SQLite, WAL mode). Ports 
 │       ├── routes/          # market, portfolio, ai
 │       ├── cache.ts         # TTL cache with stale-while-revalidate fallback
 │       └── db.ts            # SQLite (better-sqlite3, WAL)
+├── quant/                   # Independent Python quantitative research service
+│   ├── quant_engine/        # FastAPI, connectors, indicators, strategy, SQLite repository
+│   └── tests/               # Mocked unit and API tests (no broker connection required)
 └── web/                      # Next.js 15 + React 19 + Tailwind 4
     ├── components/           # TopBar, Sidebar, Workspace, CommandPalette
     ├── components/widgets/   # Chart, Quote, Watchlist, News, Screener, Heatmap, Crypto, Options, Macro, Portfolio, Calendar, AI
